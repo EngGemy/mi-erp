@@ -1,0 +1,60 @@
+# Deploy Crown BOM to shared hosting on every push to main.
+#
+# Asset strategy: NO CI npm build.
+# - Filament admin uses php artisan filament:assets on the server (no custom Filament Vite theme).
+# - Custom UI CSS lives in public/css/ (committed) and ships via git.
+# - vite.config.js only builds resources/css|js for welcome.blade.php (not required for /admin).
+
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to shared host (SSH)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate deploy.sh syntax
+        run: bash -n deploy.sh
+
+      - name: Deploy on server via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          command_timeout: 30m
+          script: |
+            set -euo pipefail
+            if [ -z "${DEPLOY_PATH:-}" ]; then
+              echo "ERROR: GitHub secret DEPLOY_PATH is not set."
+              exit 1
+            fi
+            if [ ! -d "$DEPLOY_PATH" ]; then
+              echo "ERROR: DEPLOY_PATH does not exist: $DEPLOY_PATH"
+              exit 1
+            fi
+            if [ ! -f "$DEPLOY_PATH/deploy.sh" ]; then
+              echo "ERROR: deploy.sh not found in $DEPLOY_PATH — run initial git clone first (see SERVER_SETUP.md)."
+              exit 1
+            fi
+            cd "$DEPLOY_PATH"
+            echo ">>> Starting deploy in $(pwd)"
+            bash deploy.sh
