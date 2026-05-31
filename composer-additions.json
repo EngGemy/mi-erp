@@ -1,0 +1,10 @@
+{
+    "_ملاحظة": "هذه الحزم المطلوب إضافتها فوق تثبيت Laravel 12 + Filament 4 النظيف",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.0",
+        "filament/filament": "^4.0",
+        "symfony/expression-language": "^7.0",
+        "maatwebsite/excel": "^3.1"
+    }
+}
