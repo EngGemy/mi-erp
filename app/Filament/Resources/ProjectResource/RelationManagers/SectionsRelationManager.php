@@ -30,7 +30,7 @@ class SectionsRelationManager extends RelationManager
             ->reorderable('sort')
             ->defaultSort('sort')
             ->emptyStateHeading('لا توجد أقسام')
-            ->emptyStateDescription('استخدم زر «مشروع كراون جاهز» من قائمة المشاريع أو «تحميل قالب كراون» من تعديل المشروع للتعبئة التلقائية.')
+            ->emptyStateDescription('تُنشأ تلقائياً مع المشروع من قالب كراون. إن كانت فارغة، استخدم «تحميل قالب كراون» من أعلى الصفحة.')
             ->columns([
                 TextColumn::make('name')->label('القسم'),
                 TextColumn::make('items_count')->counts('items')->label('عدد الأصناف'),

@@ -7,6 +7,7 @@ use App\Models\CatalogSection;
 use App\Models\Item;
 use App\Models\Project;
 use App\Models\Section;
+use Database\Seeders\CatalogSeeder;
 use InvalidArgumentException;
 
 class CatalogApplyService
@@ -25,6 +26,8 @@ class CatalogApplyService
         if (! in_array($mode, [self::MODE_REPLACE, self::MODE_SYNC], true)) {
             throw new InvalidArgumentException("وضع غير معروف: {$mode}");
         }
+
+        $this->ensureCatalogPopulated();
 
         $sectionMap = $this->ensureProjectSections($project);
 
@@ -66,6 +69,16 @@ class CatalogApplyService
             'sections' => count($sectionMap),
             'items'    => $itemCount,
         ];
+    }
+
+    /** يملأ الكتالوج المركزي من قالب كراون إن كان فارغاً (مثلاً بيئة إنتاج بدون seed). */
+    protected function ensureCatalogPopulated(): void
+    {
+        if (CatalogItem::query()->where('is_active', true)->exists()) {
+            return;
+        }
+
+        app(CatalogSeeder::class)->run();
     }
 
     /**

@@ -102,7 +102,7 @@ class ItemsRelationManager extends RelationManager
             ->reorderable('sort')
             ->defaultSort('sort')
             ->emptyStateHeading('لا توجد أصناف')
-            ->emptyStateDescription('استخدم زر «مشروع كراون جاهز» من قائمة المشاريع أو «تحميل قالب كراون» من تعديل المشروع للتعبئة التلقائية.')
+            ->emptyStateDescription('يُفترض أن تُضاف تلقائياً عند إنشاء المشروع. إن كانت فارغة، استخدم «تحميل قالب كراون» من أعلى الصفحة.')
             ->columns([
                 TextColumn::make('code')->label('الكود')->searchable()->copyable(),
                 TextColumn::make('name')->label('الصنف')->searchable()->wrap(),

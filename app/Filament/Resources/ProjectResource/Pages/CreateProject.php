@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 
 use App\Filament\Resources\ProjectResource;
 use App\Filament\Resources\ProjectResource\Concerns\SyncsProjectVariables;
+use App\Services\CatalogApplyService;
 use App\Services\CrownSettings;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
@@ -26,6 +27,11 @@ class CreateProject extends CreateRecord
     protected function afterCreate(): void
     {
         $this->persistProjectVariables();
+
+        app(CatalogApplyService::class)->applyFromCatalog(
+            $this->record->fresh(),
+            CatalogApplyService::MODE_REPLACE
+        );
     }
 
     protected function getRedirectUrl(): string
@@ -37,7 +43,7 @@ class CreateProject extends CreateRecord
     {
         return Notification::make()
             ->title('تم إنشاء المشروع')
-            ->body('تم حفظ المتغيرات الأساسية — يمكنك الآن مراجعة الحصر.')
+            ->body('تم حفظ المتغيرات وسحب أقسام وأصناف كراون تلقائياً — يمكنك مراجعة الحصر.')
             ->success();
     }
 }
