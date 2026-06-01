@@ -98,8 +98,17 @@ class AdminPanelProvider extends PanelProvider
     {
         $path = $this->safeSetting('logo_path');
 
-        if (is_string($path) && $path !== '' && Storage::disk('public')->exists($path)) {
+        if (! is_string($path) || $path === '') {
+            return asset('images/mi_logo.svg');
+        }
+
+        if (Storage::disk('public')->exists($path)) {
             return Storage::disk('public')->url($path);
+        }
+
+        // Legacy uploads saved to the default private disk before disk('public') was set.
+        if (Storage::disk('local')->exists($path)) {
+            return route('crown.private-file', ['path' => $path]);
         }
 
         return asset('images/mi_logo.svg');

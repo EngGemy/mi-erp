@@ -62,10 +62,10 @@
         }
         .crown-wbs-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
         .crown-wbs-table thead th {
-            background: var(--crown-charcoal);
-            color: #fff;
+            background: var(--crown-table-head-bg);
+            color: var(--crown-table-head-text);
             padding: 9px 10px;
-            border: 1px solid var(--crown-charcoal-soft);
+            border: 1px solid var(--crown-border);
             font-weight: 600;
         }
         .crown-wbs-table tbody td {

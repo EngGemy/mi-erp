@@ -10,8 +10,9 @@
         padding: 0.75rem 1rem;
         margin-bottom: 1rem;
         border-radius: var(--crown-radius);
-        background: var(--crown-charcoal);
-        color: #fff;
+        background: var(--crown-sec-bg);
+        color: var(--crown-sec-text);
+        border: 1px solid var(--crown-border);
         direction: rtl;
     }
     .crown-ship-bar__title { font-weight: 700; }
@@ -64,9 +65,9 @@
         border-color: rgba(21, 128, 61, 0.4);
     }
     .crown-adj-btn:hover {
-        background: var(--crown-charcoal);
-        color: #fff;
-        border-color: var(--crown-charcoal);
+        background: var(--crown-sidebar-hover);
+        color: var(--crown-text);
+        border-color: var(--crown-border);
     }
     .crown-adj-btn--plus:hover {
         background: var(--crown-success);

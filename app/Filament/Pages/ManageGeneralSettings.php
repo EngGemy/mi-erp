@@ -18,6 +18,7 @@ use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Storage;
 
 class ManageGeneralSettings extends Page
 {
@@ -50,9 +51,11 @@ class ManageGeneralSettings extends Page
 
     public function mount(): void
     {
+        $logoPath = $this->migrateLegacyLogoToPublic(CrownSettings::get('logo_path'));
+
         $this->form->fill([
             'factory_name'             => CrownSettings::get('factory_name'),
-            'logo_path'                => CrownSettings::get('logo_path'),
+            'logo_path'                => $logoPath,
             'default_scrap_percent'    => CrownSettings::defaultScrapPercent(),
             'default_units_multiplier' => CrownSettings::defaultUnitsMultiplier(),
             'currency'                 => CrownSettings::get('currency', 'EGP'),
@@ -77,6 +80,7 @@ class ManageGeneralSettings extends Page
                     FileUpload::make('logo_path')
                         ->label('الشعار (mi_logo)')
                         ->image()
+                        ->disk('public')
                         ->directory('settings/logo')
                         ->visibility('public')
                         ->maxSize(2048),
@@ -136,6 +140,7 @@ class ManageGeneralSettings extends Page
         if (is_array($logo)) {
             $logo = $logo[0] ?? null;
         }
+        $logo = $this->migrateLegacyLogoToPublic(is_string($logo) ? $logo : null);
 
         CrownSettings::setMany([
             'factory_name'             => $data['factory_name'],
@@ -159,6 +164,29 @@ class ManageGeneralSettings extends Page
         return $schema->components([
             $this->getFormContentComponent(),
         ]);
+    }
+
+    /**
+     * Move logos uploaded to the private disk before ->disk('public') was configured.
+     */
+    protected function migrateLegacyLogoToPublic(?string $path): ?string
+    {
+        if (! is_string($path) || $path === '') {
+            return $path;
+        }
+
+        if (! Storage::disk('local')->exists($path)) {
+            return $path;
+        }
+
+        if (! Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->put($path, Storage::disk('local')->get($path));
+        }
+
+        Storage::disk('local')->delete($path);
+        CrownSettings::set('logo_path', $path);
+
+        return $path;
     }
 
     protected function getFormContentComponent(): Form

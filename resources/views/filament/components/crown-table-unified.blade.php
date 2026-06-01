@@ -21,12 +21,12 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        background: var(--crown-charcoal);
-        color: #fff;
+        background: var(--crown-table-head-bg);
+        color: var(--crown-table-head-text);
         font-weight: 600;
         font-size: 0.75rem;
         padding: 9px 10px;
-        border: 1px solid var(--crown-charcoal-soft);
+        border: 1px solid var(--crown-border);
         white-space: nowrap;
         vertical-align: middle;
         text-align: center;
@@ -60,11 +60,11 @@
     .crown-table tfoot td {
         position: sticky;
         bottom: 0;
-        background: var(--crown-charcoal);
-        color: #fff;
+        background: var(--crown-table-foot-bg);
+        color: var(--crown-table-foot-text);
         font-weight: 700;
         padding: 9px 12px;
-        border-top: 2px solid var(--crown-charcoal-soft);
+        border-top: 2px solid var(--crown-border);
     }
     .crown-table .col-item {
         min-width: 11rem;

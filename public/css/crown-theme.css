@@ -22,29 +22,29 @@
 
 .fi-sidebar.fi-main-sidebar,
 .fi-sidebar-header {
-    background: var(--crown-charcoal) !important;
-    border-color: var(--crown-charcoal-soft) !important;
+    background: var(--crown-sidebar-bg) !important;
+    border-color: var(--crown-sidebar-border) !important;
 }
 
 .fi-sidebar-nav,
 .fi-sidebar-footer {
-    background: var(--crown-charcoal) !important;
+    background: var(--crown-sidebar-bg) !important;
 }
 
 .fi-sidebar-item-btn,
 .fi-sidebar-item-label,
 .fi-sidebar-group-label {
-    color: #e5e7eb !important;
+    color: var(--crown-sidebar-text) !important;
 }
 
 .fi-sidebar-item.fi-active > .fi-sidebar-item-btn,
 .fi-sidebar-item.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn {
-    background: var(--crown-charcoal-soft) !important;
-    color: #fff !important;
+    background: var(--crown-sidebar-active) !important;
+    color: var(--crown-primary-dark) !important;
 }
 
 .fi-sidebar-item-btn:hover {
-    background: var(--crown-charcoal-soft) !important;
+    background: var(--crown-sidebar-hover) !important;
 }
 
 .fi-topbar {
@@ -95,13 +95,13 @@
 }
 
 .fi-ta-table thead tr {
-    background: var(--crown-charcoal) !important;
+    background: var(--crown-table-head-bg) !important;
 }
 
 .fi-ta-table thead th {
-    color: #fff !important;
+    color: var(--crown-table-head-text) !important;
     font-weight: 600 !important;
-    border-color: var(--crown-charcoal-soft) !important;
+    border-color: var(--crown-border) !important;
     padding: 0.5625rem 0.75rem !important;
 }
 

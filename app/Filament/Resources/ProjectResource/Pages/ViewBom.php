@@ -221,7 +221,7 @@ class ViewBom extends Page
                         ->disk('local')->directory('imports'),
                 ])
                 ->action(function (array $data) {
-                    $path = storage_path('app/'.$data['file']);
+                    $path = \Illuminate\Support\Facades\Storage::disk('local')->path($data['file']);
                     Excel::import(new BomImport($this->record), $path);
                     $this->syncVarValuesFromRecord();
                     $this->savedVarValues = $this->varValues;
