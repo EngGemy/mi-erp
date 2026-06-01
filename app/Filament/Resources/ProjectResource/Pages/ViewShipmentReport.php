@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Concerns\AuthorizesCrownPage;
 use App\Exports\ShipmentReportExport;
 use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\ProjectResource\Pages\ViewShortage;
 use App\Models\Project;
 use App\Services\ShipmentReportService;
 use Filament\Actions\Action;
@@ -27,6 +28,11 @@ class ViewShipmentReport extends Page
     public function getTitle(): string
     {
         return 'تقرير الحمولات';
+    }
+
+    public function getSubheading(): ?string
+    {
+        return $this->record->code.' — '.$this->record->name;
     }
 
     public Project $record;
@@ -58,6 +64,20 @@ class ViewShipmentReport extends Page
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('shortage')
+                ->label('النواقص')
+                ->icon('heroicon-o-clipboard-document-check')
+                ->color('warning')
+                ->visible(fn () => auth()->user()?->can('View:ViewShortage') ?? false)
+                ->url(fn () => ViewShortage::getUrl(['record' => $this->record])),
+
+            Action::make('manageShipments')
+                ->label('إدارة الحمولات')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->color('gray')
+                ->visible(fn () => auth()->user()?->can('Update:Project') ?? false)
+                ->url(fn () => ProjectResource::getUrl('edit', ['record' => $this->record])),
+
             Action::make('exportExcel')
                 ->label('تصدير Excel')
                 ->icon('heroicon-o-arrow-down-tray')
