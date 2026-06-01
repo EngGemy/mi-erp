@@ -39,6 +39,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
+          envs: DEPLOY_PATH
           script_stop: true
           command_timeout: 30m
           script: |
